@@ -14,10 +14,7 @@ import {
   getUserEvents,
   getVerifiedAt,
   isEmailVerified,
-  fromSnapshot,
-  type UnverifiedUser,
-  type VerifiedUser,
-  type User,
+  fromSnapshot
 } from './User';
 import { Email } from '../value-objects/Email';
 import { Password } from '../value-objects/Password';

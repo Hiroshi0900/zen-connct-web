@@ -2,7 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RegisterUserUseCase } from './RegisterUserUseCase';
 import { Email } from '../../domain/value-objects/Email';
 import { Password } from '../../domain/value-objects/Password';
-import { createUser, getUserEmail, type User } from '../../domain/entities/User';
+import { createUser, getUserEmail } from '../../domain/entities/User';
+import { TestLoggerAdapter } from '../../../../lib/logging/adapters/TestLoggerAdapter';
+import { DEFAULT_LOGGER_CONFIG } from '../../../../lib/logging/LoggingPort';
 
 // モックインターフェース
 interface MockUserRepository {
@@ -13,13 +15,15 @@ interface MockUserRepository {
 describe('RegisterUserUseCase', () => {
   let useCase: RegisterUserUseCase;
   let mockUserRepository: MockUserRepository;
+  let mockLogger: TestLoggerAdapter;
 
   beforeEach(() => {
     mockUserRepository = {
       findByEmail: vi.fn(),
       save: vi.fn(),
     };
-    useCase = new RegisterUserUseCase(mockUserRepository as any);
+    mockLogger = new TestLoggerAdapter(DEFAULT_LOGGER_CONFIG);
+    useCase = new RegisterUserUseCase(mockUserRepository as MockUserRepository & { findByEmail: jest.Mock; save: jest.Mock }, mockLogger);
   });
 
   describe('execute', () => {

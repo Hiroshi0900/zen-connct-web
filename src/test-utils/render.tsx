@@ -1,5 +1,6 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
+import { DependencyProvider } from '@/lib/di/DependencyProvider';
 
 // カスタムレンダー関数のプロバイダー型定義
 interface AllTheProvidersProps {
@@ -9,14 +10,14 @@ interface AllTheProvidersProps {
 // 将来的にContext Providerを追加する際のラッパーコンポーネント
 const AllTheProviders = ({ children }: AllTheProvidersProps) => {
   return (
-    <>
+    <DependencyProvider>
       {/* TODO: 認証Context、テーマContext等をここに追加 */}
       {/* <AuthProvider> */}
       {/* <ThemeProvider> */}
       {children}
       {/* </ThemeProvider> */}
       {/* </AuthProvider> */}
-    </>
+    </DependencyProvider>
   );
 };
 

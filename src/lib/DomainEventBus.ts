@@ -1,7 +1,7 @@
 // zen-connect ドメインイベントバス
 // ドメインレイヤーでのイベント発行と、アプリケーションレイヤーでの購読を管理
 
-type EventHandler<T = any> = (event: T) => void | Promise<void>;
+type EventHandler<T = unknown> = (event: T) => void | Promise<void>;
 
 interface DomainEvent {
   readonly eventName: string;

@@ -9,8 +9,7 @@ import {
   getUserId,
   getUserEmail,
   getUserEvents,
-  isEmailVerified,
-  type User 
+  isEmailVerified
 } from '../domain/entities/User';
 import { InMemoryUserRepository } from '../infrastructure/repositories/InMemoryUserRepository';
 import { RegisterUserUseCase } from '../application/use-cases/RegisterUserUseCase';
@@ -31,7 +30,7 @@ describe('Authentication Integration Tests', () => {
     it.each([
       ['user@example.com', 'SecurePassword123!', 'SecurePassword123!', true, '正しいパスワードでログイン成功'],
       ['user@example.com', 'SecurePassword123!', 'WrongPassword123!', false, '間違ったパスワードでログイン失敗'],
-    ] as const)('ユーザー登録: %s, 登録パスワード: %s, ログインパスワード: %s -> %s', async (email, registerPassword, loginPassword, shouldSucceed, description) => {
+    ] as const)('ユーザー登録: %s, 登録パスワード: %s, ログインパスワード: %s -> %s', async (email, registerPassword, loginPassword, shouldSucceed) => {
       // 新規登録
       const registerResult = await registerUseCase.execute({ email, password: registerPassword });
       expect(registerResult.isSuccess).toBe(true);

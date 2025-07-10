@@ -17,7 +17,7 @@ describe('LoginUserUseCase', () => {
     mockUserRepository = {
       findByEmail: vi.fn(),
     };
-    useCase = new LoginUserUseCase(mockUserRepository as any);
+    useCase = new LoginUserUseCase(mockUserRepository as MockUserRepository & { findByEmail: jest.Mock });
   });
 
   describe('execute', () => {

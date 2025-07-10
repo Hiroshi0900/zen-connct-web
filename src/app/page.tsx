@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Home() {
-  const { isLoading, isAuthenticated, user, error } = useAuth();
+  const { isLoading, isAuthenticated, user } = useAuth();
   const logger = useLogger('HomePage');
   const searchParams = useSearchParams();
   const authError = searchParams.get('error');

@@ -31,7 +31,7 @@ export const handlers = [
   
   // ユーザー登録
   http.post('/api/auth/register', async ({ request }) => {
-    const { name, email, password } = await request.json() as {
+    const { name, email } = await request.json() as {
       name: string;
       email: string;
       password: string;
