@@ -91,7 +91,8 @@ export class AuthService {
         this.logger.debug('Fetching current user information');
         
         try {
-          const response = await this.fetchWithRetry(
+          // 401/404エラーの場合はリトライしない
+          const response = await fetch(
             `${this.config.apiBaseUrl}${this.config.userInfoUrl}`,
             {
               method: 'GET',
@@ -114,7 +115,31 @@ export class AuthService {
             return null;
           }
 
+          // その他のエラーはリトライ付きで再度実行
           if (!response.ok) {
+            // 5xx エラーなどの場合のみリトライ
+            if (response.status >= 500) {
+              const retryResponse = await this.fetchWithRetry(
+                `${this.config.apiBaseUrl}${this.config.userInfoUrl}`,
+                {
+                  method: 'GET',
+                  credentials: 'include',
+                  headers: {
+                    'Accept': 'application/json',
+                  },
+                  mode: 'cors',
+                }
+              );
+              
+              if (!retryResponse.ok) {
+                throw new Error(`HTTP ${retryResponse.status}: ${retryResponse.statusText}`);
+              }
+              
+              const userData: AuthMeResponse = await retryResponse.json();
+              const user = mapAuthResponseToUser(userData);
+              return user;
+            }
+            
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
 
@@ -129,18 +154,43 @@ export class AuthService {
 
           return user;
         } catch (error) {
-          if (error instanceof Error) {
-            const authError = this.mapErrorToAuthError(error);
-            this.logger.error('Failed to fetch user information', error);
-            throw authError;
+          // ネットワークエラーの場合のみ再試行
+          if (error instanceof Error && error.message.includes('Failed to fetch')) {
+            this.logger.warn('Network error occurred, attempting retry...');
+            try {
+              const response = await this.fetchWithRetry(
+                `${this.config.apiBaseUrl}${this.config.userInfoUrl}`,
+                {
+                  method: 'GET',
+                  credentials: 'include',
+                  headers: {
+                    'Accept': 'application/json',
+                  },
+                  mode: 'cors',
+                }
+              );
+              
+              if (response.status === 401 || response.status === 404) {
+                return null;
+              }
+              
+              if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+              }
+              
+              const userData: AuthMeResponse = await response.json();
+              const user = mapAuthResponseToUser(userData);
+              return user;
+            } catch (retryError) {
+              // リトライも失敗した場合
+              const authError = this.mapErrorToAuthError(retryError as Error);
+              this.logger.error('Failed to fetch user information after retry', retryError as Error);
+              throw authError;
+            }
           }
           
-          const authError = createAuthError(
-            'unknown',
-            'Unknown error occurred while fetching user information'
-          );
-          
-          this.logger.error('Unknown error fetching user information', authError.originalError);
+          const authError = this.mapErrorToAuthError(error as Error);
+          this.logger.error('Failed to fetch user information', error as Error);
           throw authError;
         }
       }

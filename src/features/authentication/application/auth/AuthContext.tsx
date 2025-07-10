@@ -48,10 +48,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 }) => {
   const [state, dispatch] = useReducer(authReducer, { status: 'loading' });
   const logger = useLogger('AuthProvider');
-  const authService = new AuthService(config, logger);
+  const authService = React.useMemo(() => new AuthService(config, logger), [config, logger]);
+  const [hasCheckedAuth, setHasCheckedAuth] = React.useState(false);
 
   // 初期認証状態の確認
   useEffect(() => {
+    // 既にチェック済みの場合はスキップ
+    if (hasCheckedAuth) {
+      return;
+    }
+
     const checkAuthStatus = async () => {
       await withLogContext(
         { 
@@ -75,16 +81,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
               logger.info('User not authenticated on initialization');
             }
           } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            dispatch({ type: 'ERROR', error: errorMessage });
-            logger.error('Authentication check failed', error as Error);
+            // 401エラーの場合は未認証として扱う（エラー状態にしない）
+            if (error instanceof Error && error.message.includes('401')) {
+              dispatch({ type: 'UNAUTHENTICATED' });
+              logger.info('User not authenticated (401)');
+            } else {
+              const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+              dispatch({ type: 'ERROR', error: errorMessage });
+              logger.error('Authentication check failed', error as Error);
+            }
+          } finally {
+            // チェック完了をマーク
+            setHasCheckedAuth(true);
           }
         }
       );
     };
 
     checkAuthStatus();
-  }, [authService, logger]);
+  }, [authService, logger, hasCheckedAuth]);
 
   // ログイン処理
   const login = async (): Promise<void> => {
@@ -157,9 +172,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
             logger.info('User not authenticated after refresh');
           }
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Refresh failed';
-          dispatch({ type: 'ERROR', error: errorMessage });
-          logger.error('User refresh failed', error as Error);
+          // 401エラーの場合は未認証として扱う（エラー状態にしない）
+          if (error instanceof Error && error.message.includes('401')) {
+            dispatch({ type: 'UNAUTHENTICATED' });
+            logger.info('User not authenticated after refresh (401)');
+          } else {
+            const errorMessage = error instanceof Error ? error.message : 'Refresh failed';
+            dispatch({ type: 'ERROR', error: errorMessage });
+            logger.error('User refresh failed', error as Error);
+          }
         }
       }
     );
