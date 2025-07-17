@@ -6,9 +6,6 @@
 import { ProtectedRoute } from '@/features/authentication/ui/components/ProtectedRoute';
 import { Navigation } from '@/features/authentication/ui/components/Navigation';
 import { UserProfileWithImageUpload } from '@/features/profile/ui/components/UserProfileWithImageUpload';
-import { AuthDebug } from '@/features/profile/ui/components/AuthDebug';
-import { SessionDebug } from '@/features/profile/ui/components/SessionDebug';
-import { CorsTestUtility } from '@/features/profile/ui/components/CorsTestUtility';
 import { useAuth } from '@/features/authentication/application/auth/AuthContext';
 
 export default function ProfilePage() {
@@ -30,14 +27,10 @@ function ProfilePageContent() {
       <main className="py-8">
         <div className="max-w-4xl mx-auto px-5">
           <h1 className="text-3xl font-bold mb-8">プロフィール</h1>
-          <AuthDebug />
-          <SessionDebug />
-          <CorsTestUtility />
           <UserProfileWithImageUpload 
             user={user}
             onProfileUpdate={async (updatedData) => {
               // TODO: プロフィール更新API呼び出し
-              console.log('Profile update:', updatedData);
             }}
           />
         </div>
