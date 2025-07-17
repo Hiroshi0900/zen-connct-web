@@ -1,4 +1,4 @@
-// zen-connect コンソールロガーアダプター
+// ゼンコネクト コンソールロガーアダプター
 // 開発環境向けの美しいコンソール出力
 
 import { ILogger, LogLevel, LogMetadata, isLogLevelEnabled, LoggerConfig } from '../LoggingPort';

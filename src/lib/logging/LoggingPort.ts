@@ -1,4 +1,4 @@
-// zen-connect ロガー抽象化レイヤー
+// ゼンコネクト ロガー抽象化レイヤー
 // Clean Architecture の Port パターンに準拠
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';

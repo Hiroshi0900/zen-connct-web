@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "zen-connect",
+  title: "ゼンコネクト",
   description: "瞑想体験共有アプリ",
 };
 

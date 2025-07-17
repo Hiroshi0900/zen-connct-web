@@ -1,4 +1,4 @@
-// zen-connect DIコンテナ
+// ゼンコネクト DIコンテナ
 // Clean Architecture に準拠した軽量依存性注入コンテナ
 // 関数型プログラミングアプローチを採用
 

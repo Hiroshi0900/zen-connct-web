@@ -1,4 +1,4 @@
-// zen-connect 認証コンポーネントのエクスポート
+// ゼンコネクト 認証コンポーネントのエクスポート
 // 認証関連UIコンポーネントの統一エクスポート
 
 export { AuthenticatedHome } from './AuthenticatedHome';

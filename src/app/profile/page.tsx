@@ -1,11 +1,14 @@
-// zen-connect プロフィールページ
+// ゼンコネクト プロフィールページ
 // ユーザープロフィール表示・編集ページ（認証必須）
 
 'use client';
 
 import { ProtectedRoute } from '@/features/authentication/ui/components/ProtectedRoute';
 import { Navigation } from '@/features/authentication/ui/components/Navigation';
-import { UserProfile } from '@/features/authentication/ui/components/UserProfile';
+import { UserProfileWithImageUpload } from '@/features/profile/ui/components/UserProfileWithImageUpload';
+import { AuthDebug } from '@/features/profile/ui/components/AuthDebug';
+import { SessionDebug } from '@/features/profile/ui/components/SessionDebug';
+import { CorsTestUtility } from '@/features/profile/ui/components/CorsTestUtility';
 import { useAuth } from '@/features/authentication/application/auth/AuthContext';
 
 export default function ProfilePage() {
@@ -27,7 +30,10 @@ function ProfilePageContent() {
       <main className="py-8">
         <div className="max-w-4xl mx-auto px-5">
           <h1 className="text-3xl font-bold mb-8">プロフィール</h1>
-          <UserProfile 
+          <AuthDebug />
+          <SessionDebug />
+          <CorsTestUtility />
+          <UserProfileWithImageUpload 
             user={user}
             onProfileUpdate={async (updatedData) => {
               // TODO: プロフィール更新API呼び出し

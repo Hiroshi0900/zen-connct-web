@@ -1,4 +1,4 @@
-// zen-connect ナビゲーションコンポーネント
+// ゼンコネクト ナビゲーションコンポーネント
 // 認証済みユーザー向けのメインナビゲーション
 
 import React, { useState } from 'react';
@@ -32,7 +32,7 @@ export const Navigation: React.FC<NavigationProps> = ({ user, currentPage = 'hom
   };
 
   const navItems = [
-    { key: 'home', label: 'ホーム', href: '/', icon: '🏠' },
+    { key: 'home', label: 'ホーム', href: '/dashboard', icon: '🏠' },
     { key: 'community', label: 'コミュニティ', href: '/community', icon: '👥' },
     { key: 'profile', label: 'プロフィール', href: '/profile', icon: '👤' },
     { key: 'settings', label: '設定', href: '/settings', icon: '⚙️' },
@@ -44,7 +44,7 @@ export const Navigation: React.FC<NavigationProps> = ({ user, currentPage = 'hom
         <div className="flex justify-between items-center">
           {/* ロゴ */}
           <Link href="/" className="text-xl sm:text-2xl font-semibold text-accent-teal hover:text-accent-teal/80 transition-colors">
-            zen-connect
+            ゼンコネクト
           </Link>
 
           {/* デスクトップナビゲーション */}

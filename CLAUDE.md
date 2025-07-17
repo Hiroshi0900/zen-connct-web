@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**zen-connect** is a meditation experience sharing app (瞑想版「サウナイキタイ」) built with Next.js 15, TypeScript, and Tailwind CSS v4. The project follows Test-Driven Development (TDD) and Domain-Driven Design (DDD) principles with a functional programming approach.
+**ゼンコネクト** is a meditation experience sharing app (瞑想版「サウナイキタイ」) built with Next.js 15, TypeScript, and Tailwind CSS v4. The project follows Test-Driven Development (TDD) and Domain-Driven Design (DDD) principles with a functional programming approach.
 
 ## Essential Commands
 

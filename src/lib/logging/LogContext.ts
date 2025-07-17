@@ -1,4 +1,4 @@
-// zen-connect ログコンテキスト管理
+// ゼンコネクト ログコンテキスト管理
 // リクエストやセッションを通じた統一的なログ情報管理
 
 import { LogMetadata } from './LoggingPort';

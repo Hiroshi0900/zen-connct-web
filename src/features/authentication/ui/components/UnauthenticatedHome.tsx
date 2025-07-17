@@ -1,4 +1,4 @@
-// zen-connect 未認証ホームページコンポーネント
+// ゼンコネクト 未認証ホームページコンポーネント
 // 未認証ユーザー向けのランディングページ
 
 import React from 'react';
@@ -7,7 +7,7 @@ import { useLogger } from '../../../../lib/di/DependencyProvider';
 import { withLogContext } from '../../../../lib/logging/LogContext';
 
 export const UnauthenticatedHome: React.FC = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const logger = useLogger('UnauthenticatedHome');
 
   const handleLoginClick = async () => {
@@ -29,19 +29,31 @@ export const UnauthenticatedHome: React.FC = () => {
       <header className="fixed top-0 w-full bg-primary-dark/95 backdrop-blur-sm z-50 border-b border-accent-teal/5">
         <nav className="max-w-6xl mx-auto px-5 py-5 flex justify-between items-center">
           <div className="text-2xl font-semibold text-accent-teal">
-            zen-connect
+            ゼンコネクト
           </div>
           <ul className="hidden md:flex gap-8">
             <li><a href="#features" className="text-primary-light hover:text-accent-teal transition-colors">機能</a></li>
             <li><a href="#community" className="text-primary-light hover:text-accent-teal transition-colors">コミュニティ</a></li>
             <li><a href="#about" className="text-primary-light hover:text-accent-teal transition-colors">について</a></li>
           </ul>
-          <button 
-            onClick={handleLoginClick}
-            className="border-2 border-accent-teal text-accent-teal px-5 py-2 rounded-lg font-medium hover:bg-accent-teal hover:text-primary-dark transition-all"
-          >
-            ログイン
-          </button>
+          <div className="flex items-center gap-4">
+            {isAuthenticated && user && (
+              <a 
+                href="/dashboard" 
+                className="text-accent-teal hover:text-accent-teal/80 transition-colors font-medium"
+              >
+                ダッシュボードへ →
+              </a>
+            )}
+            {!isAuthenticated && (
+              <button 
+                onClick={handleLoginClick}
+                className="border-2 border-accent-teal text-accent-teal px-5 py-2 rounded-lg font-medium hover:bg-accent-teal hover:text-primary-dark transition-all"
+              >
+                ログイン
+              </button>
+            )}
+          </div>
         </nav>
       </header>
 
@@ -59,12 +71,21 @@ export const UnauthenticatedHome: React.FC = () => {
               新しいマインドフルネス・コミュニティ
             </p>
             <div className="flex gap-5 justify-center flex-wrap">
-              <button 
-                onClick={handleLoginClick}
-                className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all"
-              >
-                今すぐ始める
-              </button>
+              {isAuthenticated ? (
+                <a 
+                  href="/dashboard"
+                  className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all inline-block"
+                >
+                  ダッシュボードを開く
+                </a>
+              ) : (
+                <button 
+                  onClick={handleLoginClick}
+                  className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all"
+                >
+                  今すぐ始める
+                </button>
+              )}
               <a href="#features" className="border-2 border-accent-coral text-accent-coral px-8 py-4 rounded-xl font-medium text-lg hover:bg-accent-coral hover:text-primary-dark hover:-translate-y-0.5 transition-all">
                 詳しく見る
               </a>
@@ -75,7 +96,7 @@ export const UnauthenticatedHome: React.FC = () => {
         {/* フィーチャーセクション */}
         <section id="features" className="py-20 bg-gray-900/30">
           <div className="max-w-6xl mx-auto px-5">
-            <h2 className="text-4xl font-semibold text-center mb-15">zen-connectの特徴</h2>
+            <h2 className="text-4xl font-semibold text-center mb-15">ゼンコネクトの特徴</h2>
             <div className="grid md:grid-cols-3 gap-10">
               <div className="bg-gray-700/60 p-10 rounded-2xl text-center border border-gray-600/10 hover:-translate-y-1 hover:border-accent-teal/30 hover:shadow-xl transition-all backdrop-blur-sm">
                 <div className="w-15 h-15 bg-gradient-to-br from-accent-teal to-zen-indigo rounded-full mx-auto mb-5 flex items-center justify-center text-2xl">
@@ -182,12 +203,21 @@ export const UnauthenticatedHome: React.FC = () => {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl font-semibold mb-5">今すぐ始めませんか？</h2>
               <p className="text-xl text-gray-400 mb-10">あなたの瞑想体験を記録し、素敵なコミュニティに参加しましょう</p>
-              <button 
-                onClick={handleLoginClick}
-                className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all inline-block"
-              >
-                無料で始める
-              </button>
+              {isAuthenticated ? (
+                <a 
+                  href="/dashboard"
+                  className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all inline-block"
+                >
+                  ダッシュボードを開く
+                </a>
+              ) : (
+                <button 
+                  onClick={handleLoginClick}
+                  className="bg-accent-teal text-primary-dark px-8 py-4 rounded-xl font-semibold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-accent-teal/30 hover:-translate-y-0.5 transition-all inline-block"
+                >
+                  無料で始める
+                </button>
+              )}
             </div>
           </div>
         </section>
@@ -202,7 +232,7 @@ export const UnauthenticatedHome: React.FC = () => {
             <a href="#" className="text-gray-400 hover:text-accent-teal transition-colors">お問い合わせ</a>
             <a href="#" className="text-gray-400 hover:text-accent-teal transition-colors">ヘルプ</a>
           </div>
-          <p className="text-gray-400">&copy; 2025 zen-connect. All rights reserved.</p>
+          <p className="text-gray-400">&copy; 2025 ゼンコネクト. All rights reserved.</p>
         </div>
       </footer>
     </div>

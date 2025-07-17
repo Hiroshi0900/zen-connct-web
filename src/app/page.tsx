@@ -3,13 +3,12 @@
 import { useAuth } from '@/features/authentication/application/auth/AuthContext';
 import { useLogger } from '@/lib/di/DependencyProvider';
 import { LoadingSpinner } from '@/features/authentication/ui/components/LoadingSpinner';
-import { AuthenticatedHome } from '@/features/authentication/ui/components/AuthenticatedHome';
 import { UnauthenticatedHome } from '@/features/authentication/ui/components/UnauthenticatedHome';
 import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function Home() {
-  const { isLoading, isAuthenticated, user } = useAuth();
+  const { isLoading } = useAuth();
   const logger = useLogger('HomePage');
   const searchParams = useSearchParams();
   const authError = searchParams.get('error');
@@ -64,13 +63,7 @@ export default function Home() {
   // AuthContextのエラー表示を削除（APIエラーは画面全体に表示しない）
   // 401/404などの認証関連エラーは既にAuthServiceで適切に処理済み
 
-  // 認証済みの場合
-  if (isAuthenticated && user) {
-    logger.info('Rendering authenticated home page', { userId: user.id });
-    return <AuthenticatedHome user={user} />;
-  }
-
-  // 未認証の場合
-  logger.info('Rendering unauthenticated home page');
+  // 認証状態に関わらずLPページを表示
+  logger.info('Rendering landing page');
   return <UnauthenticatedHome />;
 }

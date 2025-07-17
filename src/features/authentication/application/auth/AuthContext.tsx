@@ -1,4 +1,4 @@
-// zen-connect Auth0認証コンテキスト
+// ゼンコネクト Auth0認証コンテキスト
 // 認証状態のグローバル管理
 
 'use client';

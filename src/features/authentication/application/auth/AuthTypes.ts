@@ -1,4 +1,4 @@
-// zen-connect Auth0認証システム型定義
+// ゼンコネクト Auth0認証システム型定義
 // 認証状態の型安全な管理
 
 export interface AuthUser {

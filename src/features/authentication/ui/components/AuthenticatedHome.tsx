@@ -1,4 +1,4 @@
-// zen-connect 認証済みホームページコンポーネント
+// ゼンコネクト 認証済みホームページコンポーネント
 // 認証済みユーザー向けのメインダッシュボード
 
 import React from 'react';
@@ -34,9 +34,15 @@ export const AuthenticatedHome: React.FC<AuthenticatedHomeProps> = ({ user }) =>
       <header className="bg-primary-dark/95 backdrop-blur-sm border-b border-accent-teal/20 sticky top-0 z-50">
         <nav className="max-w-6xl mx-auto px-5 py-4 flex justify-between items-center">
           <div className="text-2xl font-semibold text-accent-teal">
-            zen-connect
+            ゼンコネクト
           </div>
           <div className="flex items-center gap-6">
+            <a 
+              href="/dashboard" 
+              className="text-gray-300 hover:text-accent-teal transition-colors font-medium"
+            >
+              ダッシュボードへ
+            </a>
             <span className="text-gray-300">
               おかえりなさい、<span className="text-accent-teal font-medium">{user.name}</span>
             </span>

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-// zen-connect APIのモックハンドラー
+// ゼンコネクト APIのモックハンドラー
 export const handlers = [
   // =============================================================================
   // 認証関連API

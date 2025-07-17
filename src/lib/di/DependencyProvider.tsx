@@ -1,4 +1,4 @@
-// zen-connect React依存性注入プロバイダー
+// ゼンコネクト React依存性注入プロバイダー
 // Clean Architecture に準拠した依存性の管理
 
 'use client';

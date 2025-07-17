@@ -1,4 +1,4 @@
-// zen-connect テストロガーアダプター
+// ゼンコネクト テストロガーアダプター
 // テスト環境向けのログキャプチャとアサーション
 
 import { ILogger, LogLevel, LogMetadata, LogEntry, LoggerConfig } from '../LoggingPort';

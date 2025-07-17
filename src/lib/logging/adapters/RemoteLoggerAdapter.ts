@@ -1,4 +1,4 @@
-// zen-connect リモートロガーアダプター
+// ゼンコネクト リモートロガーアダプター
 // 本番環境向けのリモートログ送信（バッチ処理）
 
 import { ILogger, LogLevel, LogMetadata, LogEntry, LoggerConfig, isLogLevelEnabled } from '../LoggingPort';

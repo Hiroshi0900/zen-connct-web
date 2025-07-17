@@ -1,4 +1,4 @@
-// zen-connect 認証アプリケーション層エクスポート
+// ゼンコネクト 認証アプリケーション層エクスポート
 // 認証関連アプリケーションサービス・フックの統一エクスポート
 
 export { AuthProvider, useAuth, useAuthCallback } from './AuthContext';

@@ -1,4 +1,4 @@
-// zen-connect用のテストデータ定義
+// ゼンコネクト用のテストデータ定義
 
 // ユーザーデータ
 export const mockUser = {

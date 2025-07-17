@@ -1,4 +1,4 @@
-// zen-connect Auth0認証サービス
+// ゼンコネクト Auth0認証サービス
 // Auth0 APIとの通信を担当
 
 import { 

@@ -1,4 +1,4 @@
-// zen-connect ロガーファクトリー
+// ゼンコネクト ロガーファクトリー
 // 環境に応じたロガーの生成と管理
 
 import { ILogger, ILoggerFactory, LoggerConfig, DEFAULT_LOGGER_CONFIG } from './LoggingPort';

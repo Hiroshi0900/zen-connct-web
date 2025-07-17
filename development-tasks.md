@@ -1,4 +1,4 @@
-# zen-connect フロントエンド開発タスク
+# ゼンコネクト フロントエンド開発タスク
 
 ## プロジェクト概要
 - **フレームワーク**: Next.js 15 (App Router) + TypeScript
