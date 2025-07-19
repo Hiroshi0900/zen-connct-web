@@ -1,8 +1,10 @@
 name: Deploy to Cloudflare Pages
 
 on:
-  # 本番デプロイ: リリースタグ作成時
+  # 本番デプロイ: mainブランチプッシュ時またはリリースタグ作成時
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   
