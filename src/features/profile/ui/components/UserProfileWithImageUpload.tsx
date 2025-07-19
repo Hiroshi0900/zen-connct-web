@@ -27,14 +27,37 @@ export const UserProfileWithImageUpload: React.FC<UserProfileWithImageUploadProp
     bio: user.bio || '',
   });
   const [currentProfileImageUrl, setCurrentProfileImageUrl] = useState(user.profileImageUrl);
+  const [displayNameError, setDisplayNameError] = useState('');
 
   // Create service instances
   const apiClient = new ProfileImageApiClient();
   const profileApiClient = new ProfileApiClient();
   const uploadService = new ProfileImageUploadService(apiClient);
 
+  const validateDisplayName = (value: string): string => {
+    const trimmedValue = value.trim();
+    if (!trimmedValue) {
+      return '表示名を入力してください';
+    }
+    return '';
+  };
+
+  const handleDisplayNameChange = (value: string) => {
+    setFormData({ ...formData, displayName: value });
+    setDisplayNameError(validateDisplayName(value));
+  };
+
   const handleSave = async () => {
     if (!onProfileUpdate) return;
+
+    // バリデーション実行
+    const displayNameValidationError = validateDisplayName(formData.displayName);
+    setDisplayNameError(displayNameValidationError);
+
+    // バリデーションエラーがある場合は保存しない
+    if (displayNameValidationError) {
+      return;
+    }
 
     await withLogContext(
       { 
@@ -78,6 +101,7 @@ export const UserProfileWithImageUpload: React.FC<UserProfileWithImageUploadProp
       displayName: user.displayName || '',
       bio: user.bio || '',
     });
+    setDisplayNameError('');
     setIsEditing(false);
   };
 
@@ -208,10 +232,21 @@ export const UserProfileWithImageUpload: React.FC<UserProfileWithImageUploadProp
                   type="text"
                   id="displayName"
                   value={formData.displayName}
-                  onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
-                  className="w-full bg-gray-600/30 border border-gray-500/30 text-primary-light px-3 py-3 sm:px-4 sm:py-3 rounded-lg focus:border-accent-teal focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation"
+                  onChange={(e) => handleDisplayNameChange(e.target.value)}
+                  className={`w-full bg-gray-600/30 border text-primary-light px-3 py-3 sm:px-4 sm:py-3 rounded-lg focus:outline-none transition-colors text-base min-h-[44px] touch-manipulation ${
+                    displayNameError 
+                      ? 'border-red-500 focus:border-red-500' 
+                      : 'border-gray-500/30 focus:border-accent-teal'
+                  }`}
                   placeholder="表示名を入力してください"
+                  aria-invalid={!!displayNameError}
+                  aria-describedby={displayNameError ? 'displayName-error' : undefined}
                 />
+                {displayNameError && (
+                  <p id="displayName-error" className="mt-1 text-sm text-red-400">
+                    {displayNameError}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -231,7 +266,7 @@ export const UserProfileWithImageUpload: React.FC<UserProfileWithImageUploadProp
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <button
                   onClick={handleSave}
-                  disabled={isLoading}
+                  disabled={isLoading || !!displayNameError}
                   className="bg-accent-teal text-primary-dark px-6 py-3 rounded-lg font-medium hover:bg-accent-teal/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
                 >
                   {isLoading ? '保存中...' : '保存する'}
