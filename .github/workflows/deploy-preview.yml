@@ -1,15 +1,13 @@
-name: Deploy to Cloudflare Pages
+name: Manual Preview Deploy
 
 on:
-  # 本番デプロイ: リリースタグ作成時
-  push:
-    tags:
-      - 'v*'
-  
-  # プレビューデプロイ: PRの場合のみ
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+        type: string
 
 jobs:
   deploy:
@@ -21,6 +19,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,7 +33,7 @@ jobs:
 
       - name: Run tests
         run: npm test
-        continue-on-error: true # 一時的にテストエラーを許容
+        continue-on-error: true
 
       - name: Build application
         run: npm run build
@@ -41,7 +41,7 @@ jobs:
       - name: Build for Cloudflare Pages
         run: npm run pages:build
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages (Preview)
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -49,5 +49,4 @@ jobs:
           projectName: zen-connect
           directory: .vercel/output/static
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # タグプッシュは本番、PRはプレビュー
-          deployment-environment: ${{ github.event_name == 'pull_request' && 'preview' || 'production' }}
+          deployment-environment: 'preview'

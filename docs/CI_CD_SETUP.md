@@ -69,13 +69,43 @@ git push origin main
 ## デプロイの種類
 
 ### Production デプロイ
-- **トリガー**: mainブランチへのプッシュ
+- **トリガー**: リリースタグ作成時 (例: `v1.0.0`)
 - **URL**: https://zen-connect.pages.dev
+- **実行方法**: 
+  ```bash
+  git tag v1.0.0
+  git push origin v1.0.0
+  ```
 
 ### Preview デプロイ
-- **トリガー**: mainブランチへのプルリクエスト
+- **トリガー1**: mainブランチへのプルリクエスト
+- **トリガー2**: 手動実行（GitHub Actions → "Manual Preview Deploy"）
 - **URL**: https://[hash].zen-connect.pages.dev
 - プルリクエストにコメントでURLが自動投稿される
+
+## リリース手順
+
+### 本番リリース
+```bash
+# 1. バージョンタグ作成
+git tag v1.0.0
+
+# 2. タグをプッシュ（自動で本番デプロイ開始）
+git push origin v1.0.0
+
+# 3. GitHub Releasesでリリースノート作成（任意）
+```
+
+### 開発用プレビュー
+```bash
+# 方法1: プルリクエスト作成
+git checkout -b feature/new-feature
+git push origin feature/new-feature
+# → PRでプレビュー自動生成
+
+# 方法2: 手動デプロイ
+# GitHub → Actions → "Manual Preview Deploy" → Run workflow
+```
 
 ## トラブルシューティング
 
