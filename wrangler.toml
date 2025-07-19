@@ -6,7 +6,7 @@ pages_build_output_dir = ".vercel/output/static"
 # Production environment variables
 [env.production.vars]
 NEXT_PUBLIC_APP_ENV = "production"
-NEXT_PUBLIC_API_URL = "https://api.zen-connect.com"  # 本番API URL（未設定時はダミー）
+NEXT_PUBLIC_API_URL = "https://zen-connect-api-737966288604.asia-northeast1.run.app"  # 本番API URL
 
 # Preview environment variables  
 [env.preview.vars]
