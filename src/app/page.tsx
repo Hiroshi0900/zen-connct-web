@@ -5,9 +5,9 @@ import { useLogger } from '@/lib/di/DependencyProvider';
 import { LoadingSpinner } from '@/features/authentication/ui/components/LoadingSpinner';
 import { UnauthenticatedHome } from '@/features/authentication/ui/components/UnauthenticatedHome';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 
-export default function Home() {
+function HomeContent() {
   const { isLoading } = useAuth();
   const logger = useLogger('HomePage');
   const searchParams = useSearchParams();
@@ -66,4 +66,12 @@ export default function Home() {
   // 認証状態に関わらずLPページを表示
   logger.info('Rendering landing page');
   return <UnauthenticatedHome />;
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <HomeContent />
+    </Suspense>
+  );
 }

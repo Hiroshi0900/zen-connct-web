@@ -12,7 +12,12 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:dev": "wrangler pages dev .vercel/output/static --port 3000",
+    "pages:deploy": "wrangler pages deploy .vercel/output/static",
+    "deploy:production": "npm run build && npm run pages:build && npm run pages:deploy",
+    "deploy:preview": "npm run build && npm run pages:build && wrangler pages deploy .vercel/output/static --env preview"
   },
   "dependencies": {
     "next": "15.3.5",
@@ -20,6 +25,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.12",
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.53.2",
     "@tailwindcss/postcss": "^4",
